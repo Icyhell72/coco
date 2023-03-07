@@ -23,6 +23,8 @@ public class Produit implements java.io.Serializable{
     private String description;
     private float price;
     private String color;
+
+    private String vendorMail;
     @Enumerated(EnumType.STRING)
     private ProductStatus status;
     @ManyToMany(cascade = CascadeType.ALL)
@@ -36,5 +38,9 @@ public class Produit implements java.io.Serializable{
     @ManyToOne
     @ToString.Exclude
     Categorie categorie;
+
+    public Set<Stock> getStocks() {
+        return stocks;
+    }
 
 }

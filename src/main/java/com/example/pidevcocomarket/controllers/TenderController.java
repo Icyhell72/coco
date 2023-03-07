@@ -1,16 +1,28 @@
 package com.example.pidevcocomarket.controllers;
 
-
 import com.example.pidevcocomarket.entities.Tender;
 import com.example.pidevcocomarket.interfaces.ITenderService;
+import com.example.pidevcocomarket.repositories.TenderRepository;
+import com.example.pidevcocomarket.services.ProviderMailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/tender")
 public class TenderController {
+
+    private final TenderRepository tenderRepository;
+    private final ProviderMailService providerMailService;
+
+    @Autowired
+    public TenderController(TenderRepository tenderRepository, ProviderMailService providerMailService) {
+        this.tenderRepository = tenderRepository;
+        this.providerMailService = providerMailService;
+    }
+
     @Autowired
     private ITenderService tenderService;
 
@@ -26,7 +38,9 @@ public class TenderController {
 
     @PostMapping("/add")
     public Tender addTender(@RequestBody Tender tender) {
-        return tenderService.addTender(tender);
+        Tender addedTender = tenderService.addTender(tender);
+        providerMailService.sendTenderStartedEmail(addedTender);
+        return addedTender;
     }
 
     @PutMapping("/update")

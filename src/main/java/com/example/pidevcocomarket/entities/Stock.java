@@ -25,4 +25,6 @@ public class Stock implements java.io.Serializable {
     @JsonIgnore
     @ToString.Exclude
     private Set<Produit> produits;
+
+
 }
